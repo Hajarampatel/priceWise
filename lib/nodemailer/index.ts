@@ -99,7 +99,7 @@ export async function generateEmailBody(
             subject : emailContent.subject,
 
         }
-        transporter.sendMail(mailOptions, (error : any, info : any)=>{
+         transporter.sendMail(mailOptions, (error : any, info : any)=>{
           if(error) console.log( "Error in sending Email : ",error);
           console.log('Email sent : ', info);
         })
