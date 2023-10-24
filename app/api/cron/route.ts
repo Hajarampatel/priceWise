@@ -88,7 +88,13 @@ export async function GET(request: Request) {
 
     const products = await Product.find({});
 
-    if (!products) throw new Error("No product fetched");
+    // if (!products) throw new Error("No product fetched");
+    if (!products || products.length === 0) {
+        return NextResponse.json({
+          message: "No products found",
+          data: [],
+        });
+      }
 
     // ======================== 1 SCRAPE LATEST PRODUCT DETAILS & UPDATE DB
     const updatedProducts = await Promise.all(
