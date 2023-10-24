@@ -10,9 +10,9 @@ const productSchema = new mongoose.Schema({
     title : { type : String, required : true},
     currentPrice : {type: Number, required : true},
     originalPrice : {type : Number, required : true},
-    priceHistory : {
-        price : {type :Number, required : false}
-    },
+    priceHistory : [{
+        price : {type :Number}
+    }],
     lowestPrice : {type : Number},
     highestPrice :  {type : Number},
     averagePrice :  {type : Number},
@@ -26,6 +26,8 @@ const productSchema = new mongoose.Schema({
     ],
     default : [],
 }, {timestamps : true });
+
+// const Product = mongoose.models.Product ||  mongoose.model('Product', productSchema);
 
 const Product = mongoose.models.Product ||  mongoose.model('Product', productSchema);
 

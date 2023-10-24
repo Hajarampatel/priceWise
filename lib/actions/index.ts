@@ -4,7 +4,6 @@ import Product from "../models/product.model";
 import { connectToDB } from "../mongoose";
 import { scrapeAmazonProduct } from "../scrapper";
 import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
-import { log } from "console";
 import { User } from "@/types";
 import { generateEmailBody, sendEmail } from "../nodemailer";
 
@@ -18,20 +17,29 @@ export async function scrapAndStoreProduct(productUrl:string) {
         connectToDB();
         const scrapedProduct : any = await scrapeAmazonProduct(productUrl);
         if(!scrapedProduct ) return;
-        if (!scrapedProduct || !scrapedProduct.priceHistory || !scrapedProduct.priceHistory.price) {
-            // Handle the case where priceHistory.price is missing or invalid.
-            return;
-        }
 
         let product =  scrapedProduct;
         const existingProduct = await Product.findOne({ url : scrapedProduct.url });
-         // console.log("data " , existingProduct);
+        //  console.log("data " , existingProduct);
         
         if(existingProduct){
-            const updatedPriceHistory: any = [
-                ...existingProduct.priceHistory,
-                {price : scrapedProduct.currentPrice}
-            ];
+
+            
+            // const updatedPriceHistory: any = [
+            //     ...existingProduct.priceHistory,
+            //     {price : scrapedProduct.currentPrice}
+            // ];
+
+
+            let updatedPriceHistory;
+            if (existingProduct.priceHistory && Array.isArray(existingProduct.priceHistory)) {
+                updatedPriceHistory = [
+                    ...existingProduct.priceHistory,
+                    { price: scrapedProduct.currentPrice }
+                ];
+            } else {
+                updatedPriceHistory = [{ price: scrapedProduct.currentPrice }];
+            }
         
         product = {
             ...scrapedProduct, 
