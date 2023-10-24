@@ -106,8 +106,4 @@ export async function generateEmailBody(
           console.error("Email sending failed", error)
           throw error;
         }
-        // transporter.sendMail(mailOptions, (error : any, info : any)=>{
-        //   if(error) console.log( "Error in sending Email : ",error);
-        //   console.log('Email sent : ', info);
-        // })
     }
