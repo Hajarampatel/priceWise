@@ -93,21 +93,25 @@ export function getAveragePrice(priceList: PriceHistoryItem[]) {
   return averagePrice;
 }
 
-export const getEmailNotifType = (
+export const getEmailNotifType =async  (
   scrapedProduct: Product,
   currentProduct: Product
 ) => {
-  const lowestPrice = getLowestPrice(currentProduct.priceHistory);
+  const lowestPrice = await getLowestPrice(currentProduct.priceHistory);
 
   if (scrapedProduct.currentPrice < lowestPrice) {
+    console.log("LOWEST_PRICE");
     return Notification.LOWEST_PRICE as keyof typeof Notification;
   }
   if (!scrapedProduct.isOutOfStock && currentProduct.isOutOfStock) {
+    console.log("CHANGE_OF_STOCK");
     return Notification.CHANGE_OF_STOCK as keyof typeof Notification;
   }
   if (scrapedProduct.discountRate >= THRESHOLD_PERCENTAGE) {
+    console.log("THRESHOLD_MET");
     return Notification.THRESHOLD_MET as keyof typeof Notification;
   }
+console.log("Returned Null");
 
   return null;
 };
